@@ -12,6 +12,7 @@ class UserProfile extends React.Component {
                         <Link to={"/"} className='m-3 d-block'>Home</Link>
                         <Link to={"/userProfile"} className='m-3 d-block'>User Profile</Link>
                         <Link to={"/debits"} className='m-3 d-block'>Debits</Link>
+                        <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
                     </div>
 
                     <div className='card text-dark bg-light mt-3'>

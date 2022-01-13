@@ -3,25 +3,26 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AccountBalance from "./accountBalance";
 
-function Debits() {
-    const [debits, setDebits] = useState([]);
+function Credits() {
+    const [credits, setCredits] = useState([]);
 
-    const getDebits = async () => {
+    const getCredits = async () => {
         await axios
-            .get("https://moj-api.herokuapp.com/debits")
+            .get("https://moj-api.herokuapp.com/credits")
             .then(response => {
-                setDebits(response.data);
+                setCredits(response.data);
+                console.log(credits);
             });
     }
 
     useEffect(() => {
-        getDebits();
+        getCredits();
     }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const date = new Date();
-        setDebits([...debits, {
+        setCredits([...credits, {
             description: document.getElementById("descInput").value,
             amount: parseFloat(document.getElementById("amtInput").value),
             date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
@@ -30,7 +31,7 @@ function Debits() {
 
     return (
         <div>
-            <h1 className="text-center bg-warning m-0 p-3">Debits</h1>
+            <h1 className="text-center bg-warning m-0 p-3">Credits</h1>
             
             <div className='d-flex justify-content-center'>
                 <Link to={"/"} className='m-3 d-block'>Home</Link>
@@ -38,6 +39,8 @@ function Debits() {
                 <Link to={"/debits"} className='m-3 d-block'>Debits</Link>
                 <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
             </div>
+
+            <AccountBalance credits={credits}></AccountBalance>
 
             <table className="table table-light table-striped table-bordered text-center my-0">
                 <thead className="table-dark">
@@ -49,7 +52,7 @@ function Debits() {
                 </thead>
                 <tbody>
                     {
-                        debits.map((item, i) => {
+                        credits.map((item, i) => {
                             return (
                             <tr key={item.id ? item.id : i}>
                                 <td>{item.description}</td>
@@ -68,7 +71,7 @@ function Debits() {
                         </td>
                         <td>
                             <form id="addDebit" onSubmit={handleSubmit}>
-                                <button type="submit" className="btn btn-dark">Add Debit</button>
+                                <button type="submit" className="btn btn-dark">Add Credit</button>
                             </form>
                         </td>
                     </tr>
@@ -78,4 +81,4 @@ function Debits() {
     )
 }
 
-export default Debits;
+export default Credits;
