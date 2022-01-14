@@ -4,6 +4,7 @@ import AccountBalance from './accountBalance';
 
 class Home extends React.Component {
     render () {
+        console.log("act bal in Home", this.props.accountBalance);
         return (
             <div>
                 <h1 className='text-center bg-warning m-0 p-3'>Bank of React</h1>

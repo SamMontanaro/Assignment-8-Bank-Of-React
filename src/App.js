@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './Components/home';
@@ -12,7 +12,9 @@ class App extends React.Component {
     super();
 
     this.state = {
-      accountBalance: 14568.27,
+      creditsTotal: 0,
+      debitsTotal: 0,
+      accountBalance: 0,
       currentUser: {
         userName: 'bob_loblaw',
         memberSince: '08/23/99',
@@ -26,6 +28,28 @@ class App extends React.Component {
     this.setState({currentUser: newUser});
   }
 
+  addCredit = (val) => {
+    this.setState({
+      creditsTotal: val
+    }, () => {
+      this.updateAccountBalance();
+    });
+  }
+
+  addDebit = (val) => {
+    this.setState({
+      debitsTotal: val
+    }, () => {
+      this.updateAccountBalance();
+    });
+  }
+
+  updateAccountBalance = () => {
+    this.setState(() => {
+      return {accountBalance: this.state.creditsTotal - this.state.debitsTotal}
+    })
+  }
+
   render() {
     return (
       <Router>
@@ -33,8 +57,8 @@ class App extends React.Component {
           <Route exact path="/" element={<Home accountBalance={this.state.accountBalance}/>}></Route>
           <Route exact path="/login" element={<LogIn user={this.state.currentUser} mockLogin={this.mockLogin} {...this.props}></LogIn>}></Route>
           <Route exact path="/userProfile" element={<UserProfile userName={this.state.currentUser.userName} memberSince={this.state.currentUser.memberSince}></UserProfile>}></Route>
-          <Route exact path="/debits" element={<Debits></Debits>}></Route>
-          <Route exact path="/credits" element={<Credits></Credits>}></Route>
+          <Route exact path="/debits" element={<Debits addDebit={this.addDebit} accountBalance={this.state.accountBalance}></Debits>}></Route>
+          <Route exact path="/credits" element={<Credits addCredit={this.addCredit} accountBalance={this.state.accountBalance}></Credits>}></Route>
         </Routes>
       </Router>
     );

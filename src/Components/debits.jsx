@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AccountBalance from "./accountBalance";
 
-function Debits() {
+function Debits(props) {
     const [debits, setDebits] = useState([]);
     const [debitsTotal, setDebitsTotal] = useState(0);
 
@@ -32,7 +32,7 @@ function Debits() {
     }, [debits])
 
     useEffect(() => {
-        console.log("DT: ", debitsTotal);
+        props.addDebit(debitsTotal);
     }, [debitsTotal])
 
     const handleSubmit = (e) => {
@@ -56,7 +56,7 @@ function Debits() {
                 <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
             </div>
 
-            <AccountBalance debitsTotal={debitsTotal}></AccountBalance>
+            <AccountBalance accountBalance={props.accountBalance}></AccountBalance>
 
             <table className="table table-light table-striped table-bordered text-center my-0">
                 <thead className="table-dark">

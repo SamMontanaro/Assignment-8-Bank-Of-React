@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import AccountBalance from "./accountBalance";
 
-function Credits() {
+function Credits(props) {
     const [credits, setCredits] = useState([]);
     const [creditsTotal, setCreditsTotal] = useState(0);
 
@@ -32,7 +32,7 @@ function Credits() {
     }, [credits])
 
     useEffect(() => {
-        console.log("CT: ", creditsTotal);
+        props.addCredit(creditsTotal);
     }, [creditsTotal])
 
     const handleSubmit = (e) => {
@@ -56,7 +56,7 @@ function Credits() {
                 <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
             </div>
 
-            <AccountBalance creditsTotal={creditsTotal}></AccountBalance>
+            <AccountBalance accountBalance={props.accountBalance}></AccountBalance>
 
             <table className="table table-light table-striped table-bordered text-center my-0">
                 <thead className="table-dark">
