@@ -5,19 +5,35 @@ import AccountBalance from "./accountBalance";
 
 function Credits() {
     const [credits, setCredits] = useState([]);
+    const [creditsTotal, setCreditsTotal] = useState(0);
 
     const getCredits = async () => {
         await axios
             .get("https://moj-api.herokuapp.com/credits")
             .then(response => {
                 setCredits(response.data);
-                console.log(credits);
             });
+    }
+
+    const updateCreditsTotal = () => {
+        let total = 0;
+        credits.forEach(e => {
+            total += e.amount;
+        })
+        setCreditsTotal(total);
     }
 
     useEffect(() => {
         getCredits();
     }, [])
+
+    useEffect(() => {
+        updateCreditsTotal();
+    }, [credits])
+
+    useEffect(() => {
+        console.log("CT: ", creditsTotal);
+    }, [creditsTotal])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,7 +56,7 @@ function Credits() {
                 <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
             </div>
 
-            <AccountBalance credits={credits}></AccountBalance>
+            <AccountBalance creditsTotal={creditsTotal}></AccountBalance>
 
             <table className="table table-light table-striped table-bordered text-center my-0">
                 <thead className="table-dark">

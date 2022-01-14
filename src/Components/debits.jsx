@@ -5,6 +5,7 @@ import AccountBalance from "./accountBalance";
 
 function Debits() {
     const [debits, setDebits] = useState([]);
+    const [debitsTotal, setDebitsTotal] = useState(0);
 
     const getDebits = async () => {
         await axios
@@ -14,9 +15,25 @@ function Debits() {
             });
     }
 
+    const updateDebitsTotal = () => {
+        let total = 0;
+        debits.forEach(e => {
+            total += e.amount;
+        })
+        setDebitsTotal(total);
+    }
+    
     useEffect(() => {
         getDebits();
     }, [])
+
+    useEffect(() => {
+        updateDebitsTotal();
+    }, [debits])
+
+    useEffect(() => {
+        console.log("DT: ", debitsTotal);
+    }, [debitsTotal])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,6 +55,8 @@ function Debits() {
                 <Link to={"/debits"} className='m-3 d-block'>Debits</Link>
                 <Link to={"/credits"} className='m-3 d-block'>Credits</Link>
             </div>
+
+            <AccountBalance debitsTotal={debitsTotal}></AccountBalance>
 
             <table className="table table-light table-striped table-bordered text-center my-0">
                 <thead className="table-dark">
